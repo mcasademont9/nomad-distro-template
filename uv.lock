@@ -3414,7 +3414,7 @@ source = { git = "https://github.com/FAIRmat-NFDI/nomad-aitoolkit.git?rev=b203f8
 name = "nomad-distribution"
 source = { editable = "." }
 dependencies = [
-    { name = "nomad-lab" },
+    { name = "nomad-lab", extra = ["infrastructure", "parsing"] },
     { name = "setuptools" },
 ]
 
@@ -3450,8 +3450,8 @@ requires-dist = [
     { name = "eelsdbconverter", marker = "extra == 'plugins'", git = "https://github.com/nomad-coe/nomad-parser-eelsdb.git?rev=entry-point" },
     { name = "nomad-aitoolkit", marker = "extra == 'plugins'", git = "https://github.com/FAIRmat-NFDI/nomad-aitoolkit.git?rev=b203f8eb28dc4b6771a39d5c5b7ad3d9d8583ac8" },
     { name = "nomad-forematics", marker = "extra == 'plugins'", git = "https://github.com/mcasademont9/nomad-forematics.git?rev=1b8d4423692c7d43bb2840383493ed0a796a4525" },
-    { name = "nomad-lab", specifier = "==1.3.15" },
     { name = "nomad-lab", extras = ["dev", "infrastructure", "parsing"], marker = "extra == 'dev'", specifier = ">=1.3.4" },
+    { name = "nomad-lab", extras = ["infrastructure", "parsing"], specifier = ">=1.3.4" },
     { name = "nomad-material-processing", marker = "extra == 'plugins'", git = "https://github.com/FAIRmat-NFDI/nomad-material-processing.git?rev=38edad53b1d78010a6e77590e2ba178a7f9fb99d" },
     { name = "nomad-normalizer-plugin-bandstructure", marker = "extra == 'plugins'", specifier = ">=1.0" },
     { name = "nomad-normalizer-plugin-dos", marker = "extra == 'plugins'", specifier = ">=1.0" },
@@ -3471,7 +3471,7 @@ requires-dist = [
     { name = "pynxtools", extras = ["convert"], marker = "extra == 'plugins'", specifier = "==0.10.2" },
     { name = "setuptools" },
 ]
-provides-extras = ["dev", "jupyter", "plugins"]
+provides-extras = ["plugins", "jupyter", "dev"]
 
 [[package]]
 name = "nomad-dos-fingerprints"

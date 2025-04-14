@@ -3427,7 +3427,7 @@ plugins = [
 requires-dist = [
     { name = "eelsdbconverter", marker = "extra == 'plugins'", git = "https://github.com/nomad-coe/nomad-parser-eelsdb.git?rev=entry-point" },
     { name = "nomad-aitoolkit", marker = "extra == 'plugins'", git = "https://github.com/FAIRmat-NFDI/nomad-aitoolkit.git?rev=b203f8eb28dc4b6771a39d5c5b7ad3d9d8583ac8" },
-    { name = "nomad-forematics", marker = "extra == 'plugins'", git = "https://github.com/mcasademont9/nomad-forematics.git?rev=1b8d4423692c7d43bb2840383493ed0a796a4525" },
+    { name = "nomad-forematics", marker = "extra == 'plugins'", git = "https://github.com/mcasademont9/nomad-forematics.git?rev=6fbcd69e2ce18461de1915bcc33632b182d48ca5" },
     { name = "nomad-lab", extras = ["dev", "infrastructure", "parsing"], marker = "extra == 'dev'", specifier = ">=1.3.4" },
     { name = "nomad-lab", extras = ["infrastructure", "parsing"], specifier = ">=1.3.4" },
     { name = "nomad-material-processing", marker = "extra == 'plugins'", git = "https://github.com/FAIRmat-NFDI/nomad-material-processing.git?rev=38edad53b1d78010a6e77590e2ba178a7f9fb99d" },
@@ -3466,7 +3466,7 @@ wheels = [
 [[package]]
 name = "nomad-forematics"
 version = "0.1.0"
-source = { git = "https://github.com/mcasademont9/nomad-forematics.git?rev=1b8d4423692c7d43bb2840383493ed0a796a4525#1b8d4423692c7d43bb2840383493ed0a796a4525" }
+source = { git = "https://github.com/mcasademont9/nomad-forematics.git?rev=6fbcd69e2ce18461de1915bcc33632b182d48ca5#6fbcd69e2ce18461de1915bcc33632b182d48ca5" }
 dependencies = [
     { name = "nomad-lab" },
     { name = "python-magic-bin", marker = "sys_platform == 'win32'" },

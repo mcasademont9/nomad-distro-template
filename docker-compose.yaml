@@ -76,6 +76,8 @@ services:
       NOMAD_ELASTIC_HOST: elastic
       NOMAD_MONGO_HOST: mongo
       NOMAD_LOGSTASH_HOST: logtransfer
+      PYTHONPATH: /app/nomad/plugins/nomad-forematics/src:$PYTHONPATH  # Add PYTHONPATH here
+
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -86,7 +88,21 @@ services:
     volumes:
       # - ./configs/nomad.yaml:/app/nomad.yaml
       - ./.volumes/fs:/app/.volumes/fs
-    command: python -m celery -A nomad.processing worker -l info -Q celery
+      #- /mnt/c/Users/vital/OneDrive/Documentos/GitHub/nomad-forematics:/app/nomad/plugins/nomad-forematics
+      - ../nomad-forematics:/app/nomad/plugins/nomad-forematics
+    command: >
+      bash -c "
+        echo '>>> Setting up local plugin override...';
+        export PYTHONPATH=/app/nomad/plugins/nomad-forematics/src:$PYTHONPATH;
+
+        echo '>>> Checking import source...';
+        python3 -c 'import sys; import nomad_forematics; print(f\"LOADED FROM: {nomad_forematics.__file__}\"); print(\"sys.path:\"); print(\"\\n\".join(sys.path))';
+
+        echo '>>> Launching Celery...';
+        python -m celery -A nomad.processing worker -l info -Q celery
+      "
+        
+    #python -m celery -A nomad.processing worker -l info -Q celery
 
   # nomad app (api + proxy)
   app:
@@ -102,6 +118,7 @@ services:
       NOMAD_MONGO_HOST: mongo
       NOMAD_LOGSTASH_HOST: logtransfer
       NOMAD_NORTH_HUB_HOST: north
+      PYTHONPATH: /app/nomad/plugins/nomad-forematics/src:$PYTHONPATH  # Add PYTHONPATH here
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -114,7 +131,28 @@ services:
     volumes:
       # - ./configs/nomad.yaml:/app/nomad.yaml
       - ./.volumes/fs:/app/.volumes/fs
-    command: ./run.sh
+      #- /mnt/c/Users/vital/OneDrive/Documentos/GitHub/nomad-forematics:/app/nomad/plugins/nomad-forematics
+      - ../nomad-forematics:/app/nomad/plugins/nomad-forematics
+    command: >
+      bash -c "
+        echo '>>> Setting up local plugin override...';
+        export PYTHONPATH=/app/nomad/plugins/nomad-forematics/src:$PYTHONPATH;
+
+        # Run those commands in the /app terminal to install the package in editable mode
+        export HOME=/tmp
+        pip install --no-deps -e /app/nomad/plugins/nomad-forematics
+
+        echo '>>> Show installed version of nomad-forematics...';
+        pip show nomad-forematics
+
+        echo '>>> Checking import source...';
+        python3 -c 'import sys; import nomad_forematics; print(f\"LOADED FROM: {nomad_forematics.__file__}\"); print(\"sys.path:\"); print(\"\\n\".join(sys.path))';
+
+        echo '>>> Launching NOMAD app...';
+        python -m nomad.cli admin run app --with-gui --gunicorn --host 0.0.0.0 \$@
+      "
+    #./run.sh
+    # ./run.sh
     healthcheck:
       test:
         - "CMD"
@@ -147,6 +185,8 @@ services:
       # - ./configs/nomad.yaml:/app/nomad.yaml
       - ./.volumes/fs:/app/.volumes/fs
       - /var/run/docker.sock:/var/run/docker.sock
+      #- /mnt/c/Users/vital/OneDrive/Documentos/GitHub/nomad-forematics:/app/nomad/plugins/nomad-forematics
+      - ../nomad-forematics:/app/nomad/plugins/nomad-forematics
     user: "1000:991"
     command: python -m nomad.cli admin run hub
     healthcheck:
